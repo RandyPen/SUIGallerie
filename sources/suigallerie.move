@@ -1,7 +1,7 @@
 module suigallerie::suigallerie {
     use std::{
         type_name,
-        ascii::String
+        ascii::{string, String}
     };
     use sui::{
         table::{Self, Table},
@@ -43,7 +43,7 @@ module suigallerie::suigallerie {
     public struct AddFund has copy, drop {
         space: ID,
         value: u64,
-        coinType: std::ascii::String,
+        coinType: String,
         sender: address,
     }
 
@@ -80,7 +80,7 @@ module suigallerie::suigallerie {
 
     public fun deploy_space_non_entry<T>(
         deploy_record: &mut DeployRecord, 
-        web2_space_id: String,
+        web2_space_id: vector<u8>,
         ctx: &mut TxContext
     ): Space<T> {
         assert!(deploy_record.version == VERSION, EVersionMismatch);
@@ -91,7 +91,7 @@ module suigallerie::suigallerie {
             gas: balance::zero<SUI>(),
         };
         let space_id = object::id(&space);
-        table::add<String, ID>(&mut deploy_record.space_ids, web2_space_id, space_id);
+        table::add<String, ID>(&mut deploy_record.space_ids, string(web2_space_id), space_id);
         emit(DeployEvent {
             deployer: ctx.sender(),
             space: space_id,
@@ -100,7 +100,7 @@ module suigallerie::suigallerie {
     }
 
     #[allow(lint(share_owned))]
-    public entry fun deploy_space<T>(deploy_record: &mut DeployRecord, web2_space_id: String, ctx: &mut TxContext) {
+    public entry fun deploy_space<T>(deploy_record: &mut DeployRecord, web2_space_id: vector<u8>, ctx: &mut TxContext) {
         let space = deploy_space_non_entry<T>(deploy_record, web2_space_id, ctx);
         transfer::share_object(space);
     }

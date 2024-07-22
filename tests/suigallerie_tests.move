@@ -1,5 +1,6 @@
 #[test_only]
 module suigallerie::suigallerie_tests {
+    use std::ascii::{string, String};
     use sui::coin;
     use sui::sui::SUI;
     use sui::test_scenario;
@@ -25,7 +26,7 @@ module suigallerie::suigallerie_tests {
         test_scenario::next_tx(scenario, alice);
         {
             let mut deploy_record = test_scenario::take_shared<suigallerie::DeployRecord>(scenario);
-            suigallerie::deploy_space<TEST>(&mut deploy_record, test_scenario::ctx(scenario));
+            suigallerie::deploy_space<TEST>(&mut deploy_record, b"btc", test_scenario::ctx(scenario));
             test_scenario::return_shared(deploy_record);
         };
 
@@ -94,7 +95,7 @@ module suigallerie::suigallerie_tests {
         test_scenario::next_tx(scenario, alice);
         {
             let mut deploy_record = test_scenario::take_shared<suigallerie::DeployRecord>(scenario);
-            suigallerie::deploy_space<TEST>(&mut deploy_record, test_scenario::ctx(scenario));
+            suigallerie::deploy_space<TEST>(&mut deploy_record, b"btc", test_scenario::ctx(scenario));
             test_scenario::return_shared(deploy_record);
         };
 
@@ -163,7 +164,7 @@ module suigallerie::suigallerie_tests {
         test_scenario::next_tx(scenario, alice);
         {
             let mut deploy_record = test_scenario::take_shared<suigallerie::DeployRecord>(scenario);
-            suigallerie::deploy_space<TEST>(&mut deploy_record, test_scenario::ctx(scenario));
+            suigallerie::deploy_space<TEST>(&mut deploy_record, b"Sui", test_scenario::ctx(scenario));
             test_scenario::return_shared(deploy_record);
         };
 
